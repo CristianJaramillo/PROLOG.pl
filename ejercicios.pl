@@ -1,143 +1,143 @@
-/*1-Determina si lo que recibe es una lista*/
+# /*1-Determina si lo que recibe es una lista*/
 
 lista([]):-!.
 lista([X|Y]):-lista(Y).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*2-Concatena dos listas*/
+# /*2-Concatena dos listas*/
 
 concatenar([],L,L).
 concatenar([X|M],L,[X|Z]):-concatenar(M,L,Z).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*3-Invierte la lista que recibe en el primer nivel*/
+# /*3-Invierte la lista que recibe en el primer nivel*/
 
 invertir([X],[X]).
 invertir([X|M],Z):-invertir(M,S), concatenar(S,[X],Z).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*4-Calcula la longitud de la lista*/
+# /*4-Calcula la longitud de la lista*/
 
 long([],0):-!.
 long([X|Y],S):-long(Y,T),!, S is T + 1.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*5-Suma los elementos de la lista*/
+# /*5-Suma los elementos de la lista*/
 
 suma_elem([X],X):-!.
 suma_elem([X|Y],S):-suma_elem(Y,T), S is T + X.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*6-Devuelve el elemento que se encuentra en la enesima posicion*/
+# /*6-Devuelve el elemento que se encuentra en la enesima posicion*/
 
 posicion_n([],N,[]):-!.
 posicion_n([X|N],1,X):-!.
 posicion_n([X|R],N,S):-M is N - 1,posicion_n(R,M,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*7-Dan como resultado el primer y el ultimo elemento de la lista*/
+# /*7-Dan como resultado el primer y el ultimo elemento de la lista*/
 
 primer_elem([X|Y],X):-!.
 
 ultimo_elem(L,S):-invertir(L,T),primer_elem(T,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*8-Calcula la primer posicion donde aparece el elemento X en la lista*/
+# /*8-Calcula la primer posicion donde aparece el elemento X en la lista*/
 
 prim_pos(X,[],0):-!.
 prim_pos(X,[X|M],1):-!.
 prim_pos(X,[Y|M],S):-prim_pos(X,M,T),S is T + 1.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*9-Elimina el elemento x de la lista en todos los niveles*/
+# /*9-Elimina el elemento x de la lista en todos los niveles*/
 
 elimina_x([],X,[]):-!.
 elimina_x([X],X,[]):-!.
 elimina_x([X|M],X,S):-elimina_x(M,X,S),!.
 elimina_x([R|M],X,S):-lista(R), elimina_x(R,X,T), elimina_x(M,X,P), concatenar([T],P,S).
 elimina_x([R|M],X,S):-elimina_x(M,X,T), concatenar([R],T,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*10-Invierte una lista en todos sus niveles*/
+# /*10-Invierte una lista en todos sus niveles*/
 
 invertir_tot([],[]):-!.
 invertir_tot([X|M],S):-lista(X),invertir_tot(X,P),invertir_tot(M,T),concatenar(T,[P],S).
 invertir_tot([X|M],S):-invertir_tot(M,T),concatenar(T,[X],S),!.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*11-Saca los n primeros elementos de una lista y devuelve el resto*/
+# /*11-Saca los n primeros elementos de una lista y devuelve el resto*/
 
 sac_n_pri([],N,[]):-!.
 sac_n_pri([X|M],1,M):-!.
 sac_n_pri([X|M],N,S):-N1 is N-1,sac_n_pri(M,N1,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*12-Da como resultado los n primeros elementos de una lista*/
+# /*12-Da como resultado los n primeros elementos de una lista*/
 
 da_n_pri(L,0,[]):-!.
 da_n_pri([],N,[]):-!.
 da_n_pri([X|M],1,[X]):-!.
 da_n_pri([X|M],N,S):-N1 is N - 1,da_n_pri(M,N1,T),concatenar([X],T,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*13-Muestra los ultimos n elementos de la lista*/
+# /*13-Muestra los ultimos n elementos de la lista*/
 
 da_n_ultim(L,N,S):-invertir_tot(L,T),da_n_pri(T,N,R),invertir_tot(R,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*14-Determina si dos listas son iguales en todos los niveles*/
+# /*14-Determina si dos listas son iguales en todos los niveles*/
 
 lista_igual([],[]):-!.
 lista_igual([X|M],[X|R]):-lista_igual(M,R).
 lista_igual([X|M],[T|R]):-lista(X), lista(T), lista_igual(X,T),lista_igual(M,R).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*15-Determina si la primer lista es prefijo de la segunda*/
+# /*15-Determina si la primer lista es prefijo de la segunda*/
 
 prefijo([],M):-!.
 prefijo([X],[X|M]):-!.
 prefijo([X|L],[X|M]):-prefijo(L,M).
 prefijo([X|T],[L|M]):-lista(X),prefijo(X,L),prefijo(T,M).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*16-Determina si la primer lista es sublista de la segunda*/
+# /*16-Determina si la primer lista es sublista de la segunda*/
 sublista([],L):-!.
 sublista(L,[X|M]):-prefijo(L,[X|M]).
 sublista(L,[X|M]):-lista(X), sublista(L,X).
 sublista(L,[X|M]):-sublista(L,M).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*17-Elimina todos los elementos de la lista 1 que est n en la 2*/
+# /*17-Elimina todos los elementos de la lista 1 que est n en la 2*/
 
 elim_l1_de_l2([],L,L):-!.
 elim_l1_de_l2([X|M],L,S):-elimina_x(L,X,T),elim_l1_de_l2(M,T,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*18-Elimina los elementos repetidos que est n en una lista*/
+# /*18-Elimina los elementos repetidos que est n en una lista*/
 
 elim_repet([],[]):-!.
 elim_repet([X|M],S):-not lista(X), elimina_x(M,X,T),elim_repet(T,Y),
 		     concatenar([X],Y,S).
 elim_repet([X|M],S):-lista(X), elim_l1_de_l2(X,M,T),elim_repet(X,Y),	
 		     elim_repet(T,J),concatenar([Y],J,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*19-Arma una lista con todos los elementos que se encuentran antes */
-/*de elemento x en la lista*/
+# /*19-Arma una lista con todos los elementos que se encuentran antes */
+# /*de elemento x en la lista*/
 
 hasta_x([X|M],X,[]):-!.
 hasta_x([Y|M],X,[Y|S]):-hasta_x(M,X,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*20-Arma una lista con todos los elementos que se encuentran despues*/
-/*del elemento x*/
+# /*20-Arma una lista con todos los elementos que se encuentran despues*/
+# /*del elemento x*/
 
 desde_x([Y|M],X,S):-X=\=Y,desde_x(M,X,S),!.
 desde_x([X,Y|M],X,[Y|M]):-X=\=Y,!.
 desde_x([Y|M],X,S):-desde_x(M,X,S),!.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*21-Determina si una lista se encuentra en orden creciente o decreciente*/
+# /*21-Determina si una lista se encuentra en orden creciente o decreciente*/
 
 creciente([X,Y|Z]):- X<Y,
 		     creciente([Y|Z]).
@@ -146,9 +146,9 @@ creciente([X]).
 decreciente([X,Y|Z]):- X>Y,
 		       decreciente([Y|Z]).
 decreciente([X]).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*22-Cuenta la ocurrencia de una lista at¢mica en otra lista*/
+# /*22-Cuenta la ocurrencia de una lista at¢mica en otra lista*/
 
 secuencia([],L,L):-!.
 secuencia([X|Y],[X|L],[X|L]):-secuencia(Y,L,L).
@@ -156,24 +156,24 @@ secuencia([X|Y],[X|L],[X|L]):-secuencia(Y,L,L).
 cta_ocurr(L,[],0):-!.
 cta_ocurr([X|Y],[X|M],N):-secuencia(Y,M,L1), cta_ocurr([X|Y],L1,T), N is T + 1.
 cta_ocurr([X|Y],[R|M],N):-cta_ocurr([X|Y],M,N),!.
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*23-Determina si una lista puede analizarse del derecho o del rev‚s*/
+# /*23-Determina si una lista puede analizarse del derecho o del rev‚s*/
 
 reversible([]):-!.
 reversible(L):-invertir(L,R),lista_igual(L,R).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*24-Calcula la cantidad de elementos que se encuentran en la misma*/
-/*posicion en dos listas*/
+# /*24-Calcula la cantidad de elementos que se encuentran en la misma*/
+# /*posicion en dos listas*/
 
 orden(L,[],0):-!.
 orden([],L,0):-!.
 orden([X],[X],1):-!.
 orden([X|Y],[X|Z],S):-orden(Y,Z,T),!, S is T+1.
 orden([X|Y],[R|Z],S):-orden(Y,Z,S).
-/*------------------------------------------------------------------*/
-/*25-Arma una lista con todas las posiciones del elemento X en la lista*/
+# /*------------------------------------------------------------------*/
+# /*25-Arma una lista con todas las posiciones del elemento X en la lista*/
 
 list_posic(X,[],N,[]):-!.
 list_posic(X,[X|M],N,L):-N1 is N + 1,list_posic(X,M,N1,G),P is N + 1,
@@ -182,23 +182,23 @@ list_posic(X,[Y|M],N,L):-N1 is N + 1,list_posic(X,M,N1,L).
 
 concatenar([],L,L):-!.
 concatenar([X|Y],L,[X|Z]):-concatenar(Y,L,Z).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*26-Arma una lista con la primera posicion de cada elemento de l1 en l2*/
+# /*26-Arma una lista con la primera posicion de cada elemento de l1 en l2*/
 
 posic_l1_l2([],L,[]):-!.
 posic_l1_l2([X|Y],L,F):-posic_l1_l2(Y,L,L2),prim_pos(X,L,S),concatenar([S],L2,F).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*27-Arma una lista con todos los elementos en secuencia creciente a partir */
-/*de X*/
+# /*27-Arma una lista con todos los elementos en secuencia creciente a partir */
+# /*de X*/
 
 mayores(X,[],[]).
 mayores(X,[Y|M],[Y|S]):-X=<Y,mayores(Y,M,S).
 mayores(X,[Y|M],S):-mayores(X,M,S).
-/*------------------------------------------------------------------*/
+# /*------------------------------------------------------------------*/
 
-/*28-Arma una lista en orden decreciente a partir del elemento  X*/
+# /*28-Arma una lista en orden decreciente a partir del elemento  X*/
 
 menores(X,[],[]).
 menores(X,[Y|Z],[Y|R]):-X>=Y,menores(Y,Z,R).
@@ -283,8 +283,8 @@ sacapos([X|Y],1,Y):-!.
 sacapos([X|Y],N,[X|R]):-N1 is N-1, sacapos(Y,N1,R).
 /*------------------------------------------------------------------*/
 
-/*40-Cuenta los elementos que se encuentran en dos listas en diferente */
-/*posiciones*/
+# /*40-Cuenta los elementos que se encuentran en dos listas en diferente */
+# /*posiciones*/
 
 desord([],L,N,0).
 desord([X|Y],L,P,S):-sacapos(L,P,L1), ocurre(X,L1,S1), P1 is P+1,
